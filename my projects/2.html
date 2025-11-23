@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>I Love You Animation</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .text {
+      position: absolute;
+      color: white;
+      font-size: 2rem;
+      z-index: 1;
+      text-shadow: 0 0 20px pink;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <div class="text">I love You</div>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function drawHeart(x, y, size, color, timeOffset) {
+      ctx.beginPath();
+      for (let t = 0; t < Math.PI * 2; t += 0.01) {
+        let scale = 16 * Math.pow(Math.sin(t), 3);
+        let yScale = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+        let xPos = x + size * scale;
+        let yPos = y - size * yScale;
+
+        if (t === 0) ctx.moveTo(xPos, yPos);
+        else ctx.lineTo(xPos, yPos);
+      }
+      ctx.strokeStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 20 + 10 * Math.sin(Date.now() / 500 + timeOffset);
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      ctx.closePath();
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2 + 30;
+
+      drawHeart(centerX - 50, centerY, 10, "#00ffff", 0); // Left half
+      drawHeart(centerX + 50, centerY, 10, "#ff00ff", Math.PI); // Right half
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
+
