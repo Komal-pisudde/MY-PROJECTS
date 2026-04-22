@@ -49,7 +49,7 @@
 ## 📊 My Coding Journey
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=your-username&show_icons=true&theme=tokyonight&hide_border=true" />
+  <img src="https://github-readme-stats.vercel.app/api?username=Komal-pisudde&show_icons=true&theme=tokyonight&hide_border=true" />
 </p>
 
 ---
@@ -57,9 +57,8 @@
 ## 🔥 Daily Streak Energy
 
 <p align="center">
-  <img src="https://streak-stats.demolab.com?user=your-username&theme=tokyonight&hide_border=true" />
+  <img src="https://streak-stats.demolab.com?user=Komal-pisudde&theme=tokyonight&hide_border=true" />
 </p>
-
 ---
 
 ## 💫 Philosophy
