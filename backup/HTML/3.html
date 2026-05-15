@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Do you love me?</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #c075bd;
+      text-align: center;
+    }
+    .question-container {
+      margin-bottom: 20px;
+    }
+    .button-container button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+    .yes-btn {
+      background-color: #ff5e7e;
+      color: white;
+    }
+    .no-btn {
+      background-color: #ddd;
+    }
+    .result-container {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="question-container container">
+    <video class="local-gif" src="Reply me love.mp4" loop autoplay muted width="300"></video>
+    <h2 class="question">Do you love me?</h2>
+    <div class="button-container">
+      <button class="yes-btn js-yes-btn">Yes</button>
+      <button class="no-btn js-no-btn">No</button>
+    </div>
+  </div>
+
+  <div class="result-container container">
+    <video class="gif-result" src="Love me.mp4" autoplay loop muted width="300"></video>
+    <h2>I knew it 😍!</h2>
+  </div>
+
+  <script>
+    const yesBtn = document.querySelector('.js-yes-btn');
+    const noBtn = document.querySelector('.js-no-btn');
+    const questionContainer = document.querySelector('.question-container');
+    const resultContainer = document.querySelector('.result-container');
+
+    yesBtn.addEventListener('click', () => {
+      questionContainer.style.display = 'none';
+      resultContainer.style.display = 'block';
+    });
+
+    noBtn.addEventListener('mouseover', () => {
+      // Move the "No" button to avoid clicking
+      noBtn.style.position = 'absolute';
+      noBtn.style.top = Math.random() * window.innerHeight + 'px';
+      noBtn.style.left = Math.random() * window.innerWidth + 'px';
+    });
+  </script>
+
+</body>
+</html>
