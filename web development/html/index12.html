@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Media Website</title>
+
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body{
+      background: #f2f2f2;
+      padding: 30px;
+    }
+
+    h1{
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    h2{
+      margin: 20px 0;
+      color: #444;
+    }
+
+    .container{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+      gap: 20px;
+    }
+
+    .card{
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .card:hover{
+      transform: scale(1.03);
+    }
+
+    audio, video{
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 10px;
+    }
+
+    button{
+      margin-top: 10px;
+      padding: 8px 15px;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover{
+      background: #2c445e;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Media Player Website</h1>
+
+  <h2>Audio Files</h2>
+
+  <div class="container">
+
+    <div class="card">
+      <h3>Audio 1</h3>
+      <audio controls>
+        <source src="1.mp3" type="audio/mp3">
+      </audio>
+      <button onclick="showMessage('Playing Audio 1')">Play</button>
+    </div>
+
+    <div class="card">
+      <h3>Audio 2</h3>
+      <audio controls>
+        <source src="2.mp3" type="audio/mp3">
+      </audio>
+      <button onclick="showMessage('Playing Audio 2')">Play</button>
+    </div>
+
+    <div class="card">
+      <h3>Audio 3</h3>
+      <audio controls>
+        <source src="3.mp3" type="audio/mp3">
+      </audio>
+      <button onclick="showMessage('Playing Audio 3')">Play</button>
+    </div>
+
+    <div class="card">
+      <h3>Audio 4</h3>
+      <audio controls>
+        <source src="4.mp3" type="audio/mp3">
+      </audio>
+      <button onclick="showMessage('Playing Audio 4')">Play</button>
+    </div>
+
+    <div class="card">
+      <h3>Audio 5</h3>
+      <audio controls>
+        <source src="5.mp3" type="audio/mp3">
+      </audio>
+      <button onclick="showMessage('Playing Audio 5')">Play</button>
+    </div>
+
+    <div class="card">
+      <h3>Audio 6</h3>
+      <audio controls>
+        <source src="6.mp3" type="audio/mp3">
+      </audio>
+      <button onclick="showMessage('Playing Audio 6')">Play</button>
+    </div>
+
+  </div>
+
+  <h2>Video Files</h2>
+
+  <div class="container">
+
+    <div class="card">
+      <h3>Video 1</h3>
+      <video controls>
+        <source src="1.mp4" type="video/mp4">
+      </video>
+      <button onclick="showMessage('Playing Video 1')">Play</button>
+    </div>
+
+    <div class="card">
+      <h3>Video 2</h3>
+      <video controls>
+        <source src="2.mp4" type="video/mp4">
+      </video>
+      <button onclick="showMessage('Playing Video 2')">Play</button>
+    </div>
+
+    <div class="card">
+      <h3>Video 3</h3>
+      <video controls>
+        <source src="3.mp4" type="video/mp4">
+      </video>
+      <button onclick="showMessage('Playing Video 3')">Play</button>
+    </div>
+
+    <div class="card">
+      <h3>Video 4</h3>
+      <video controls>
+        <source src="4.mp4" type="video/mp4">
+      </video>
+      <button onclick="showMessage('Playing Video 4')">Play</button>
+    </div>
+
+    <div class="card">
+      <h3>Video 5</h3>
+      <video controls>
+        <source src="5.mp4" type="video/mp4">
+      </video>
+      <button onclick="showMessage('Playing Video 5')">Play</button>
+    </div>
+
+    <div class="card">
+      <h3>Video 6</h3>
+      <video controls>
+        <source src="6.mp4" type="video/mp4">
+      </video>
+      <button onclick="showMessage('Playing Video 6')">Play</button>
+    </div>
+
+  </div>
+
+  <script>
+    function showMessage(message){
+      alert(message);
+    }
+  </script>
+
+</body>
+</html>
