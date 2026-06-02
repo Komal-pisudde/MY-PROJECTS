@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ConnectHub - Social Media</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --primary: #0a66c2;
+    --accent: #e91e8c;
+    --bg: #f3f2ef;
+    --white: #fff;
+    --gray: #666;
+    --light: #e0e0e0;
+    --dark: #1a1a1a;
+    --shadow: 0 2px 12px rgba(0,0,0,0.1);
+  }
+  body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); }
+
+  /* AUTH */
+  .auth-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0a66c2 0%, #0d47a1 100%); padding: 1rem; }
+  .auth-card { background: white; border-radius: 20px; padding: 2.5rem; max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  .auth-logo { text-align: center; font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem; }
+  .auth-tagline { text-align: center; color: var(--gray); font-size: 0.95rem; margin-bottom: 2rem; }
+  .auth-tabs { display: flex; border-bottom: 2px solid var(--light); margin-bottom: 1.5rem; }
+  .auth-tab { flex: 1; padding: 0.8rem; border: none; background: none; font-size: 1rem; font-weight: 600; cursor: pointer; color: var(--gray); border-bottom: 3px solid transparent; margin-bottom: -2px; }
+  .auth-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .form-group { margin-bottom: 1rem; }
+  .form-group label { display:block; font-size:0.85rem; font-weight:600; color:#555; margin-bottom:0.3rem; }
+  .form-group input, .form-group textarea, .form-group select { width:100%; padding:0.75rem 1rem; border:1.5px solid var(--light); border-radius:10px; font-size:0.95rem; outline:none; transition:border-color 0.2s; font-family:inherit; }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
+  .btn { padding:0.8rem 1.5rem; border:none; border-radius:25px; cursor:pointer; font-size:0.95rem; font-weight:600; transition:all 0.2s; }
+  .btn-primary { background:var(--primary); color:white; width:100%; }
+  .btn-primary:hover { opacity:0.9; transform:translateY(-1px); }
+  .btn-sm { padding:0.4rem 1rem; font-size:0.85rem; border-radius:20px; }
+
+  /* MAIN LAYOUT */
+  .app { display:none; min-height:100vh; }
+  .app.active { display:block; }
+
+  /* TOP NAV */
+  .topnav { background:white; position:sticky; top:0; z-index:100; box-shadow:0 1px 3px rgba(0,0,0,0.1); padding:0 1rem; }
+  .topnav-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; height:60px; gap:1rem; }
+  .nav-logo { font-size:1.5rem; font-weight:800; color:var(--primary); white-space:nowrap; }
+  .nav-search { flex:1; max-width:300px; position:relative; }
+  .nav-search input { width:100%; padding:0.5rem 1rem 0.5rem 2.5rem; border:1.5px solid var(--light); border-radius:25px; font-size:0.9rem; outline:none; background:#f3f2ef; }
+  .nav-search input:focus { border-color:var(--primary); background:white; }
+  .nav-search-icon { position:absolute; left:0.8rem; top:50%; transform:translateY(-50%); color:var(--gray); font-size:0.9rem; }
+  .nav-actions { display:flex; gap:0.5rem; align-items:center; }
+  .nav-icon-btn { background:none; border:none; cursor:pointer; padding:0.5rem; border-radius:50%; font-size:1.3rem; position:relative; transition:background 0.2s; }
+  .nav-icon-btn:hover { background:var(--bg); }
+  .notif-dot { position:absolute; top:4px; right:4px; width:8px; height:8px; background:var(--accent); border-radius:50%; border:2px solid white; }
+  .user-avatar-sm { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem; cursor:pointer; border:2px solid var(--primary); }
+
+  /* MAIN GRID */
+  .main-grid { max-width:1100px; margin:0 auto; padding:1.5rem 1rem; display:grid; grid-template-columns:280px 1fr 300px; gap:1.5rem; }
+  @media(max-width:900px) { .main-grid { grid-template-columns:1fr; } .left-sidebar,.right-sidebar { display:none; } }
+
+  /* SIDEBAR */
+  .card { background:white; border-radius:16px; box-shadow:var(--shadow); overflow:hidden; }
+  .profile-card { text-align:center; }
+  .profile-cover { height:60px; background:linear-gradient(135deg, var(--primary), #42a5f5); }
+  .profile-av-wrap { margin-top:-30px; display:flex; justify-content:center; margin-bottom:0.8rem; }
+  .profile-av { width:60px; height:60px; border-radius:50%; border:3px solid white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.2rem; }
+  .profile-card-name { font-weight:700; font-size:1.05rem; }
+  .profile-card-bio { color:var(--gray); font-size:0.85rem; padding:0 1rem; margin:0.3rem 0; }
+  .profile-stats { display:flex; justify-content:space-around; padding:0.8rem 1rem; border-top:1px solid var(--light); margin-top:0.8rem; }
+  .stat-item { text-align:center; }
+  .stat-num { font-weight:700; font-size:1rem; }
+  .stat-label { font-size:0.75rem; color:var(--gray); }
+
+  /* SUGGESTED */
+  .section-title-sm { font-size:0.85rem; font-weight:700; color:var(--gray); text-transform:uppercase; letter-spacing:1px; padding:1rem 1rem 0.5rem; }
+  .suggest-item { display:flex; align-items:center; gap:0.8rem; padding:0.7rem 1rem; cursor:pointer; transition:background 0.15s; }
+  .suggest-item:hover { background:var(--bg); }
+  .suggest-av { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem; flex-shrink:0; }
+  .suggest-info { flex:1; }
+  .suggest-name { font-weight:600; font-size:0.9rem; }
+  .suggest-bio { font-size:0.8rem; color:var(--gray); }
+  .follow-btn { background:none; border:1.5px solid var(--primary); color:var(--primary); padding:0.3rem 0.8rem; border-radius:20px; font-size:0.8rem; font-weight:600; cursor:pointer; white-space:nowrap; transition:all 0.2s; }
+  .follow-btn.following { background:var(--primary); color:white; }
+
+  /* CREATE POST */
+  .create-post { background:white; border-radius:16px; box-shadow:var(--shadow); padding:1.2rem; margin-bottom:1.5rem; }
+  .create-post-row { display:flex; gap:0.8rem; align-items:flex-start; }
+  .post-input { flex:1; border:1.5px solid var(--light); border-radius:12px; padding:0.8rem 1rem; font-size:0.95rem; font-family:inherit; resize:none; outline:none; min-height:80px; transition:border-color 0.2s; }
+  .post-input:focus { border-color:var(--primary); }
+  .post-actions { display:flex; gap:0.5rem; align-items:center; justify-content:space-between; margin-top:0.8rem; padding-top:0.8rem; border-top:1px solid var(--light); }
+  .post-media-btns { display:flex; gap:0.5rem; }
+  .media-btn { background:none; border:none; cursor:pointer; color:var(--gray); font-size:1.1rem; padding:0.4rem 0.6rem; border-radius:8px; transition:background 0.2s; }
+  .media-btn:hover { background:var(--bg); }
+  .submit-post-btn { background:var(--primary); color:white; border:none; padding:0.6rem 1.5rem; border-radius:20px; cursor:pointer; font-weight:600; font-size:0.9rem; transition:all 0.2s; }
+  .submit-post-btn:hover { opacity:0.9; }
+
+  /* POSTS FEED */
+  .post { background:white; border-radius:16px; box-shadow:var(--shadow); margin-bottom:1.2rem; overflow:hidden; }
+  .post-header { display:flex; align-items:center; gap:0.8rem; padding:1.2rem; }
+  .post-av { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1rem; flex-shrink:0; cursor:pointer; }
+  .post-meta { flex:1; }
+  .post-author { font-weight:700; font-size:0.95rem; cursor:pointer; }
+  .post-author:hover { color:var(--primary); }
+  .post-time { font-size:0.8rem; color:var(--gray); }
+  .post-follow { background:none; border:1.5px solid var(--primary); color:var(--primary); padding:0.3rem 0.8rem; border-radius:20px; font-size:0.8rem; font-weight:600; cursor:pointer; transition:all 0.2s; }
+  .post-follow.following { background:var(--primary); color:white; }
+  .post-body { padding:0 1.2rem 1rem; font-size:0.95rem; line-height:1.6; }
+  .post-image { width:100%; max-height:300px; object-fit:cover; background:linear-gradient(135deg, #e3f2fd, #bbdefb); display:flex; align-items:center; justify-content:center; font-size:4rem; }
+  .post-img-placeholder { width:100%; height:200px; background:linear-gradient(135deg, #e8f4f8, #d1ecf1); display:flex; align-items:center; justify-content:center; font-size:3rem; }
+  .post-tags { padding:0 1.2rem 0.8rem; display:flex; flex-wrap:wrap; gap:0.4rem; }
+  .tag { background:#e3f2fd; color:var(--primary); font-size:0.8rem; padding:0.2rem 0.6rem; border-radius:12px; font-weight:500; cursor:pointer; }
+  .post-footer { display:flex; gap:0; border-top:1px solid var(--light); }
+  .action-btn { flex:1; display:flex; align-items:center; justify-content:center; gap:0.4rem; padding:0.7rem; border:none; background:none; cursor:pointer; font-size:0.85rem; color:var(--gray); font-weight:500; transition:all 0.2s; border-radius:0; }
+  .action-btn:hover { background:#f5f5f5; }
+  .action-btn.liked { color:#e91e8c; }
+  .action-btn.liked .like-icon { animation:pop 0.3s; }
+  @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.4)} 100%{transform:scale(1)} }
+
+  /* COMMENTS */
+  .comments-section { padding:0 1.2rem 1.2rem; border-top:1px solid var(--light); display:none; }
+  .comments-section.open { display:block; }
+  .comment-list { margin-top:0.8rem; }
+  .comment { display:flex; gap:0.6rem; margin-bottom:0.8rem; }
+  .comment-av { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.75rem; flex-shrink:0; }
+  .comment-bubble { background:var(--bg); border-radius:12px; padding:0.5rem 0.8rem; flex:1; }
+  .comment-author { font-weight:700; font-size:0.8rem; }
+  .comment-text { font-size:0.85rem; margin-top:0.2rem; line-height:1.5; }
+  .comment-input-row { display:flex; gap:0.6rem; margin-top:0.8rem; }
+  .comment-input { flex:1; padding:0.5rem 0.8rem; border:1.5px solid var(--light); border-radius:20px; font-size:0.85rem; outline:none; font-family:inherit; }
+  .comment-input:focus { border-color:var(--primary); }
+  .comment-submit { background:var(--primary); color:white; border:none; padding:0.5rem 1rem; border-radius:20px; cursor:pointer; font-size:0.85rem; font-weight:600; }
+
+  /* PROFILE MODAL */
+  .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:200; align-items:center; justify-content:center; }
+  .modal-overlay.active { display:flex; }
+  .profile-modal { background:white; border-radius:20px; max-width:600px; width:90%; max-height:85vh; overflow-y:auto; }
+  .profile-cover-lg { height:120px; background:linear-gradient(135deg, var(--primary), #42a5f5); position:relative; }
+  .profile-av-lg { width:80px; height:80px; border-radius:50%; border:4px solid white; position:absolute; bottom:-40px; left:1.5rem; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.5rem; }
+  .profile-modal-body { padding:3rem 1.5rem 1.5rem; }
+  .profile-modal-name { font-size:1.4rem; font-weight:700; }
+  .profile-modal-bio { color:var(--gray); margin:0.3rem 0 1rem; }
+  .profile-modal-stats { display:flex; gap:2rem; margin-bottom:1rem; }
+  .profile-modal-posts { margin-top:1.5rem; }
+
+  /* TOAST */
+  .toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(100px); background:var(--dark); color:white; padding:0.8rem 1.5rem; border-radius:25px; z-index:9999; transition:transform 0.3s; font-size:0.9rem; white-space:nowrap; }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+
+  /* TRENDING */
+  .trending-item { padding:0.6rem 1rem; cursor:pointer; transition:background 0.15s; }
+  .trending-item:hover { background:var(--bg); }
+  .trending-tag { font-weight:700; font-size:0.9rem; color:var(--dark); }
+  .trending-count { font-size:0.8rem; color:var(--gray); }
+
+  /* STORIES */
+  .stories { display:flex; gap:0.8rem; overflow-x:auto; padding:1rem; background:white; border-radius:16px; box-shadow:var(--shadow); margin-bottom:1.2rem; }
+  .stories::-webkit-scrollbar { display:none; }
+  .story { display:flex; flex-direction:column; align-items:center; gap:0.4rem; cursor:pointer; flex-shrink:0; }
+  .story-ring { width:56px; height:56px; border-radius:50%; padding:2px; background:linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+  .story-av { width:100%; height:100%; border-radius:50%; border:2px solid white; display:flex; align-items:center; justify-content:center; font-size:1.5rem; }
+  .story-name { font-size:0.75rem; color:var(--dark); max-width:56px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+  /* NOTIFICATION PANEL */
+  .notif-panel { display:none; position:fixed; top:65px; right:1rem; background:white; border-radius:16px; box-shadow:0 10px 40px rgba(0,0,0,0.2); z-index:150; width:320px; max-height:400px; overflow-y:auto; }
+  .notif-panel.active { display:block; }
+  .notif-header { padding:1rem; font-weight:700; border-bottom:1px solid var(--light); display:flex; justify-content:space-between; align-items:center; }
+  .notif-item { padding:0.8rem 1rem; border-bottom:1px solid var(--light); display:flex; gap:0.8rem; align-items:flex-start; cursor:pointer; }
+  .notif-item:hover { background:var(--bg); }
+  .notif-item.unread { background:#e8f4fd; }
+  .notif-icon { font-size:1.2rem; }
+  .notif-text { font-size:0.85rem; line-height:1.5; }
+  .notif-time { font-size:0.75rem; color:var(--gray); margin-top:0.2rem; }
+
+  /* USER PROFILE SECTION */
+  .my-profile-section { display:none; }
+  .my-profile-section.active { display:block; }
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">🌐 ConnectHub</div>
+    <div class="auth-tagline">Connect, Share, Inspire</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="auth-tab" onclick="switchAuthTab('register')">Join Now</button>
+    </div>
+
+    <div id="loginPane">
+      <div class="form-group"><label>Email</label><input type="email" id="li_email" placeholder="you@email.com"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="li_pass" placeholder="••••••••"></div>
+      <button class="btn btn-primary" onclick="login()">Sign In →</button>
+      <p style="text-align:center;margin-top:0.8rem;font-size:0.8rem;color:#999">Demo: enter any email + password</p>
+    </div>
+
+    <div id="registerPane" style="display:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem">
+        <div class="form-group"><label>First Name</label><input type="text" id="rg_fname" placeholder="Alex"></div>
+        <div class="form-group"><label>Last Name</label><input type="text" id="rg_lname" placeholder="Kumar"></div>
+      </div>
+      <div class="form-group"><label>Username</label><input type="text" id="rg_uname" placeholder="@username"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="rg_email" placeholder="you@email.com"></div>
+      <div class="form-group"><label>Bio</label><input type="text" id="rg_bio" placeholder="Frontend developer & coffee lover ☕"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="rg_pass" placeholder="••••••••"></div>
+      <button class="btn btn-primary" onclick="register()">Create Account →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app" id="mainApp">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <div class="nav-logo">🌐 ConnectHub</div>
+      <div class="nav-search">
+        <span class="nav-search-icon">🔍</span>
+        <input type="text" placeholder="Search people, posts..." id="globalSearch" oninput="searchAll()">
+      </div>
+      <div class="nav-actions">
+        <button class="nav-icon-btn" onclick="showSection('feed')" title="Home">🏠</button>
+        <button class="nav-icon-btn" onclick="toggleNotif()" title="Notifications">
+          🔔 <span class="notif-dot" id="notifDot"></span>
+        </button>
+        <div class="user-avatar-sm" id="navAvatar" onclick="showSection('myprofile')" style="background:#e3f2fd;color:var(--primary)">U</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- NOTIFICATION PANEL -->
+  <div class="notif-panel" id="notifPanel">
+    <div class="notif-header">Notifications <button onclick="toggleNotif()" style="background:none;border:none;cursor:pointer;color:#999;font-size:1.2rem">✕</button></div>
+    <div id="notifList"></div>
+  </div>
+
+  <!-- MAIN FEED SECTION -->
+  <div id="feedSection">
+    <div class="main-grid">
+      <!-- LEFT SIDEBAR -->
+      <div class="left-sidebar">
+        <div class="card profile-card">
+          <div class="profile-cover"></div>
+          <div class="profile-av-wrap">
+            <div class="profile-av" id="sideAvatar" style="background:#e3f2fd;color:var(--primary)">U</div>
+          </div>
+          <div class="profile-card-name" id="sideNameDisplay">User Name</div>
+          <div class="profile-card-bio" id="sideBioDisplay">Bio here</div>
+          <div class="profile-stats">
+            <div class="stat-item"><div class="stat-num" id="sidePostCount">0</div><div class="stat-label">Posts</div></div>
+            <div class="stat-item"><div class="stat-num" id="sideFollowers">0</div><div class="stat-label">Followers</div></div>
+            <div class="stat-item"><div class="stat-num" id="sideFollowing">0</div><div class="stat-label">Following</div></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:1rem">
+          <div class="section-title-sm">Suggested for You</div>
+          <div id="suggestList"></div>
+        </div>
+      </div>
+
+      <!-- FEED CENTER -->
+      <div>
+        <!-- STORIES -->
+        <div class="stories" id="storiesRow"></div>
+
+        <!-- CREATE POST -->
+        <div class="create-post">
+          <div class="create-post-row">
+            <div class="user-avatar-sm" id="postAvatar" style="background:#e3f2fd;color:var(--primary);flex-shrink:0">U</div>
+            <textarea class="post-input" id="postInput" placeholder="What's on your mind?" rows="3"></textarea>
+          </div>
+          <div class="post-actions">
+            <div class="post-media-btns">
+              <button class="media-btn" title="Add Image" onclick="addEmojiToPost('📸')">📸</button>
+              <button class="media-btn" title="Add Video" onclick="addEmojiToPost('🎥')">🎥</button>
+              <button class="media-btn" title="Add Emoji" onclick="toggleEmojiPicker()">😊</button>
+              <button class="media-btn" title="Location" onclick="addEmojiToPost('📍')">📍</button>
+            </div>
+            <div style="display:flex;gap:0.5rem;align-items:center">
+              <select id="postVisibility" style="padding:0.3rem 0.6rem;border:1px solid var(--light);border-radius:8px;font-size:0.8rem;outline:none;cursor:pointer">
+                <option value="public">🌍 Public</option>
+                <option value="friends">👥 Friends</option>
+              </select>
+              <button class="submit-post-btn" onclick="createPost()">Post</button>
+            </div>
+          </div>
+          <div id="emojiPicker" style="display:none;padding:0.5rem;border-top:1px solid var(--light);font-size:1.5rem;flex-wrap:wrap;gap:0.3rem">
+            🎉 😂 ❤️ 🔥 👏 💡 🚀 😎 🤔 💪 🎊 🌟 💯 🙏 😍 🤩 👋 🌈 ⚡ 🏆
+          </div>
+        </div>
+
+        <!-- POSTS -->
+        <div id="feedPosts"></div>
+      </div>
+
+      <!-- RIGHT SIDEBAR -->
+      <div class="right-sidebar">
+        <div class="card">
+          <div class="section-title-sm">Trending Topics</div>
+          <div id="trendingList"></div>
+        </div>
+        <div class="card" style="margin-top:1rem;padding:1rem">
+          <div style="font-size:0.75rem;color:var(--gray)">© 2025 ConnectHub · Privacy · Terms</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MY PROFILE SECTION -->
+  <div id="myProfileSection" style="display:none;max-width:700px;margin:0 auto;padding:1.5rem 1rem">
+    <div class="card" style="overflow:visible">
+      <div style="height:140px;background:linear-gradient(135deg,var(--primary),#42a5f5);border-radius:16px 16px 0 0;position:relative">
+        <div id="profileAvLg" style="width:90px;height:90px;border-radius:50%;border:4px solid white;position:absolute;bottom:-45px;left:1.5rem;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:2rem;background:#e3f2fd;color:var(--primary)">U</div>
+      </div>
+      <div style="padding:3.5rem 1.5rem 1.5rem">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div id="profileFullName" style="font-size:1.5rem;font-weight:700"></div>
+            <div id="profileUsername" style="color:var(--gray);font-size:0.9rem"></div>
+            <div id="profileBioDisp" style="margin-top:0.5rem;line-height:1.6"></div>
+          </div>
+          <button class="btn btn-sm" style="background:var(--primary);color:white;padding:0.5rem 1.2rem" onclick="showEditProfile()">Edit Profile</button>
+        </div>
+        <div style="display:flex;gap:2rem;margin-top:1rem">
+          <div><strong id="profPostCount">0</strong> <span style="color:var(--gray);font-size:0.9rem">Posts</span></div>
+          <div><strong id="profFollowers">0</strong> <span style="color:var(--gray);font-size:0.9rem">Followers</span></div>
+          <div><strong id="profFollowing">0</strong> <span style="color:var(--gray);font-size:0.9rem">Following</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem">
+      <h3 style="margin-bottom:1rem">My Posts</h3>
+      <div id="myPostsList"></div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="appToast"></div>
+
+  <!-- OTHER USER PROFILE MODAL -->
+  <div class="modal-overlay" id="userProfileModal" onclick="closeUserModal(event)">
+    <div class="profile-modal">
+      <div class="profile-cover-lg">
+        <div class="profile-av-lg" id="modalUserAv" style="background:#e3f2fd;color:var(--primary)">U</div>
+      </div>
+      <div class="profile-modal-body">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div class="profile-modal-name" id="modalUserName"></div>
+            <div style="color:var(--gray);font-size:0.9rem" id="modalUserUname"></div>
+            <div class="profile-modal-bio" id="modalUserBio"></div>
+          </div>
+          <button class="follow-btn" id="modalFollowBtn" onclick="toggleFollowModal()">Follow</button>
+        </div>
+        <div class="profile-modal-stats">
+          <div><strong id="modalPostCount">0</strong> Posts</div>
+          <div><strong id="modalFollowers">0</strong> Followers</div>
+          <div><strong id="modalFollowing">0</strong> Following</div>
+        </div>
+        <div class="profile-modal-posts" id="modalUserPosts"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT PROFILE MODAL -->
+  <div class="modal-overlay" id="editProfileModal">
+    <div style="background:white;border-radius:20px;padding:2rem;max-width:420px;width:90%">
+      <div style="display:flex;justify-content:space-between;margin-bottom:1.5rem">
+        <h3>Edit Profile</h3>
+        <button onclick="closeEditProfile()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999">✕</button>
+      </div>
+      <div class="form-group"><label>Name</label><input type="text" id="editName" placeholder="Your Name"></div>
+      <div class="form-group"><label>Bio</label><textarea id="editBio" rows="3" placeholder="Tell people about yourself..."></textarea></div>
+      <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===================== DATA =====================
+const COLORS = ['#4caf50','#2196f3','#e91e63','#ff9800','#9c27b0','#00bcd4','#795548','#607d8b'];
+function colorFor(name) { return COLORS[name.charCodeAt(0) % COLORS.length]; }
+
+let db = JSON.parse(localStorage.getItem('chdb') || 'null');
+if (!db) {
+  db = {
+    users: [
+      { id:'u1', name:'Priya Sharma', username:'@priya_s', bio:'Full Stack Dev 💻 | Coffee Addict ☕', email:'priya@demo.com', pass:'demo', followers:['u2'], following:['u2','u3'], posts:[] },
+      { id:'u2', name:'Rahul Verma', username:'@rahul_v', bio:'UI Designer & Photographer 📸', email:'rahul@demo.com', pass:'demo', followers:['u1'], following:['u1'], posts:[] },
+      { id:'u3', name:'Ananya Singh', username:'@ananya', bio:'Machine Learning Engineer 🤖', email:'ananya@demo.com', pass:'demo', followers:[], following:[], posts:[] },
+    ],
+    posts: [
+      { id:'p1', userId:'u2', text:'Just shipped a new design system for our product! Took 3 months but so worth it 🎨✨', tags:['#design','#ux'], time: Date.now()-3600000*5, likes:['u1','u3'], comments:[{userId:'u1',text:'Looks amazing! Would love to see a walkthrough 👏',time:Date.now()-3000000}], image:'🎨' },
+      { id:'p2', userId:'u3', text:'Trained a model that can predict movie ratings with 92% accuracy! Open sourcing it next week 🚀 #ML #Python', tags:['#ML','#Python','#AI'], time:Date.now()-3600000*2, likes:['u1'], comments:[], image:'🤖' },
+      { id:'p3', userId:'u1', text:'Morning coffee + debugging session = productive Monday! What is your dev morning routine? 💻☕', tags:['#dev','#coding'], time:Date.now()-3600000*1, likes:['u2'], comments:[{userId:'u2',text:'Mine is coffee + lo-fi music! Never fails 🎵',time:Date.now()-2000000}], image:'☕' },
+    ],
+    notifications: []
+  };
+  localStorage.setItem('chdb', JSON.stringify(db));
+}
+
+let currentUser = JSON.parse(sessionStorage.getItem('chUser') || 'null');
+let modalTargetUser = null;
+
+// ===================== AUTH =====================
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.toggle('active', t.textContent === (tab==='login'?'Sign In':'Join Now')));
+  document.getElementById('loginPane').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('registerPane').style.display = tab === 'register' ? 'block' : 'none';
+}
+
+function login() {
+  const email = document.getElementById('li_email').value.trim();
+  const pass = document.getElementById('li_pass').value;
+  if (!email || !pass) return alert('Please fill all fields');
+  let user = db.users.find(u => u.email === email);
+  if (!user) {
+    // auto create
+    user = { id:'u'+Date.now(), name:email.split('@')[0], username:'@'+email.split('@')[0], bio:'New to ConnectHub 👋', email, pass, followers:[], following:[], posts:[] };
+    db.users.push(user);
+    saveDb();
+  }
+  currentUser = user;
+  sessionStorage.setItem('chUser', JSON.stringify(currentUser));
+  startApp();
+}
+
+function register() {
+  const fname = document.getElementById('rg_fname').value.trim();
+  const lname = document.getElementById('rg_lname').value.trim();
+  const uname = document.getElementById('rg_uname').value.trim();
+  const email = document.getElementById('rg_email').value.trim();
+  const bio = document.getElementById('rg_bio').value.trim();
+  const pass = document.getElementById('rg_pass').value;
+  if (!fname || !email || !pass) { showToast('⚠️ Please fill required fields'); return; }
+  if (db.users.find(u => u.email === email)) { showToast('⚠️ Email already exists'); return; }
+  const user = { id:'u'+Date.now(), name:`${fname} ${lname}`.trim(), username: uname || '@'+fname.toLowerCase(), bio: bio || 'New to ConnectHub 👋', email, pass, followers:[], following:[], posts:[] };
+  db.users.push(user);
+  currentUser = user;
+  saveDb();
+  sessionStorage.setItem('chUser', JSON.stringify(currentUser));
+  startApp();
+}
+
+// ===================== APP START =====================
+function startApp() {
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('mainApp').classList.add('active');
+  syncUser();
+  updateSidebar();
+  renderSuggestions();
+  renderTrending();
+  renderStories();
+  renderFeed();
+  renderNotifications();
+}
+
+function syncUser() {
+  // sync currentUser from db
+  const u = db.users.find(u => u.id === currentUser.id);
+  if (u) currentUser = u;
+  const initial = currentUser.name[0].toUpperCase();
+  const col = colorFor(currentUser.name);
+  ['navAvatar','postAvatar','sideAvatar','profileAvLg'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = initial; el.style.background = col+'22'; el.style.color = col; }
+  });
+  document.getElementById('sideNameDisplay').textContent = currentUser.name;
+  document.getElementById('sideBioDisplay').textContent = currentUser.bio;
+  const myPosts = db.posts.filter(p => p.userId === currentUser.id);
+  document.getElementById('sidePostCount').textContent = myPosts.length;
+  document.getElementById('sideFollowers').textContent = currentUser.followers.length;
+  document.getElementById('sideFollowing').textContent = currentUser.following.length;
+}
+
+function saveDb() { localStorage.setItem('chdb', JSON.stringify(db)); }
+
+// ===================== SIDEBAR =====================
+function updateSidebar() { syncUser(); }
+
+function renderSuggestions() {
+  const others = db.users.filter(u => u.id !== currentUser.id && !currentUser.following.includes(u.id)).slice(0,5);
+  document.getElementById('suggestList').innerHTML = others.length === 0
+    ? '<p style="padding:1rem;color:#999;font-size:0.85rem">No more suggestions</p>'
+    : others.map(u => `
+    <div class="suggest-item">
+      <div class="suggest-av" style="background:${colorFor(u.name)}22;color:${colorFor(u.name)}">${u.name[0]}</div>
+      <div class="suggest-info">
+        <div class="suggest-name">${u.name}</div>
+        <div class="suggest-bio">${u.bio.slice(0,40)}...</div>
+      </div>
+      <button class="follow-btn" id="sfBtn_${u.id}" onclick="toggleFollow('${u.id}',this)">${currentUser.following.includes(u.id)?'Following':'Follow'}</button>
+    </div>
+  `).join('');
+}
+
+function renderTrending() {
+  const trends = [
+    { tag:'#WebDev', count:'12.4K posts' },
+    { tag:'#Python', count:'8.2K posts' },
+    { tag:'#AITrends', count:'6.7K posts' },
+    { tag:'#OpenSource', count:'4.1K posts' },
+    { tag:'#CodeAlpha', count:'2.3K posts' },
+  ];
+  document.getElementById('trendingList').innerHTML = trends.map(t => `
+    <div class="trending-item">
+      <div class="trending-tag">${t.tag}</div>
+      <div class="trending-count">${t.count}</div>
+    </div>
+  `).join('');
+}
+
+function renderStories() {
+  const users = db.users.slice(0,8);
+  document.getElementById('storiesRow').innerHTML = users.map(u => `
+    <div class="story" onclick="showToast('${u.name}\'s story 📸')">
+      <div class="story-ring">
+        <div class="story-av" style="background:${colorFor(u.name)}22;color:${colorFor(u.name)}">${u.name[0]}</div>
+      </div>
+      <div class="story-name">${u.name.split(' ')[0]}</div>
+    </div>
+  `).join('');
+}
+
+// ===================== FEED =====================
+function renderFeed() {
+  const posts = [...db.posts].sort((a,b) => b.time - a.time);
+  document.getElementById('feedPosts').innerHTML = posts.length === 0
+    ? '<div style="text-align:center;padding:3rem;color:#999">No posts yet. Be the first to post! ✨</div>'
+    : posts.map(p => renderPost(p)).join('');
+}
+
+function renderPost(p) {
+  const user = db.users.find(u => u.id === p.userId);
+  if (!user) return '';
+  const liked = p.likes.includes(currentUser.id);
+  const isFollowing = currentUser.following.includes(p.userId);
+  const timeAgo = getTimeAgo(p.time);
+  const showFollow = p.userId !== currentUser.id;
+
+  return `
+  <div class="post" id="post_${p.id}">
+    <div class="post-header">
+      <div class="post-av" onclick="showUserProfile('${user.id}')" style="background:${colorFor(user.name)}22;color:${colorFor(user.name)}">${user.name[0]}</div>
+      <div class="post-meta">
+        <div class="post-author" onclick="showUserProfile('${user.id}')">${user.name} <span style="color:var(--gray);font-weight:400;font-size:0.85rem">${user.username}</span></div>
+        <div class="post-time">${timeAgo} · ${p.image ? '📸 Photo' : '🌍 Public'}</div>
+      </div>
+      ${showFollow ? `<button class="post-follow ${isFollowing?'following':''}" id="pf_${p.id}" onclick="toggleFollow('${p.userId}', this)">${isFollowing?'Following':'+ Follow'}</button>` : ''}
+    </div>
+    ${p.image ? `<div class="post-img-placeholder">${p.image}</div>` : ''}
+    <div class="post-body">${p.text}</div>
+    ${p.tags && p.tags.length ? `<div class="post-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>` : ''}
+    <div class="post-footer">
+      <button class="action-btn ${liked?'liked':''}" onclick="toggleLike('${p.id}', this)">
+        <span class="like-icon">${liked?'❤️':'🤍'}</span> <span class="like-count">${p.likes.length}</span> Like
+      </button>
+      <button class="action-btn" onclick="toggleComments('${p.id}')">
+        💬 ${p.comments.length} Comment
+      </button>
+      <button class="action-btn" onclick="sharePost('${p.id}')">
+        🔗 Share
+      </button>
+    </div>
+    <div class="comments-section" id="comments_${p.id}">
+      <div class="comment-list" id="commentList_${p.id}">
+        ${p.comments.map(c => renderComment(c)).join('')}
+      </div>
+      <div class="comment-input-row">
+        <div class="user-avatar-sm" style="background:${colorFor(currentUser.name)}22;color:${colorFor(currentUser.name)};width:32px;height:32px;flex-shrink:0">${currentUser.name[0]}</div>
+        <input class="comment-input" id="ci_${p.id}" placeholder="Write a comment..." onkeydown="if(event.key==='Enter')postComment('${p.id}')">
+        <button class="comment-submit" onclick="postComment('${p.id}')">Post</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderComment(c) {
+  const user = db.users.find(u => u.id === c.userId);
+  if (!user) return '';
+  return `
+    <div class="comment">
+      <div class="comment-av" style="background:${colorFor(user.name)}22;color:${colorFor(user.name)}">${user.name[0]}</div>
+      <div class="comment-bubble">
+        <div class="comment-author">${user.name}</div>
+        <div class="comment-text">${c.text}</div>
+        <div style="font-size:0.75rem;color:var(--gray);margin-top:0.2rem">${getTimeAgo(c.time)}</div>
+      </div>
+    </div>`;
+}
+
+// ===================== POST ACTIONS =====================
+function createPost() {
+  const text = document.getElementById('postInput').value.trim();
+  if (!text) { showToast('⚠️ Please write something first!'); return; }
+  const tags = (text.match(/#\w+/g) || []);
+  const post = { id:'p'+Date.now(), userId:currentUser.id, text, tags, time:Date.now(), likes:[], comments:[], image: text.includes('📸') || text.includes('🎥') ? '🖼' : null };
+  db.posts.unshift(post);
+  const u = db.users.find(u => u.id === currentUser.id);
+  if (u) u.posts = u.posts || [];
+  saveDb();
+  document.getElementById('postInput').value = '';
+  document.getElementById('emojiPicker').style.display = 'none';
+  renderFeed();
+  syncUser();
+  showToast('✅ Post published!');
+}
+
+function toggleLike(postId, btn) {
+  const post = db.posts.find(p => p.id === postId);
+  if (!post) return;
+  const idx = post.likes.indexOf(currentUser.id);
+  if (idx > -1) { post.likes.splice(idx, 1); }
+  else {
+    post.likes.push(currentUser.id);
+    addNotification(post.userId, 'like', `${currentUser.name} liked your post`);
+  }
+  saveDb();
+  btn.classList.toggle('liked', post.likes.includes(currentUser.id));
+  btn.querySelector('.like-icon').textContent = post.likes.includes(currentUser.id) ? '❤️' : '🤍';
+  btn.querySelector('.like-count').textContent = post.likes.length;
+}
+
+function toggleComments(postId) {
+  const sec = document.getElementById('comments_'+postId);
+  sec.classList.toggle('open');
+}
+
+function postComment(postId) {
+  const input = document.getElementById('ci_'+postId);
+  const text = input.value.trim();
+  if (!text) return;
+  const post = db.posts.find(p => p.id === postId);
+  if (!post) return;
+  const comment = { userId: currentUser.id, text, time: Date.now() };
+  post.comments.push(comment);
+  saveDb();
+  input.value = '';
+  const list = document.getElementById('commentList_'+postId);
+  list.innerHTML += renderComment(comment);
+  document.querySelector(`#post_${postId} .action-btn:nth-child(2)`).innerHTML = `💬 ${post.comments.length} Comment`;
+  addNotification(post.userId, 'comment', `${currentUser.name} commented on your post`);
+  showToast('💬 Comment posted!');
+}
+
+function sharePost(postId) {
+  showToast('🔗 Link copied to clipboard!');
+}
+
+function addEmojiToPost(emoji) {
+  document.getElementById('postInput').value += ' ' + emoji;
+  document.getElementById('postInput').focus();
+}
+
+function toggleEmojiPicker() {
+  const picker = document.getElementById('emojiPicker');
+  picker.style.display = picker.style.display === 'flex' ? 'none' : 'flex';
+  if (picker.style.display === 'flex') {
+    picker.innerHTML = '🎉 😂 ❤️ 🔥 👏 💡 🚀 😎 🤔 💪 🎊 🌟 💯 🙏 😍 🤩 👋 🌈 ⚡ 🏆'.split(' ').map(e => `<span style="cursor:pointer;padding:0.2rem" onclick="addEmojiToPost('${e}')">${e}</span>`).join('');
+  }
+}
+
+// ===================== FOLLOW =====================
+function toggleFollow(userId, btn) {
+  const u = db.users.find(u => u.id === currentUser.id);
+  const target = db.users.find(u => u.id === userId);
+  if (!u || !target) return;
+  const idx = u.following.indexOf(userId);
+  if (idx > -1) {
+    u.following.splice(idx, 1);
+    target.followers.splice(target.followers.indexOf(currentUser.id), 1);
+    btn.textContent = btn.classList.contains('post-follow') ? '+ Follow' : 'Follow';
+    btn.classList.remove('following');
+    showToast(`Unfollowed ${target.name}`);
+  } else {
+    u.following.push(userId);
+    target.followers.push(currentUser.id);
+    btn.textContent = 'Following';
+    btn.classList.add('following');
+    addNotification(userId, 'follow', `${currentUser.name} started following you`);
+    showToast(`✅ Now following ${target.name}!`);
+  }
+  currentUser = u;
+  sessionStorage.setItem('chUser', JSON.stringify(currentUser));
+  saveDb();
+  syncUser();
+  renderSuggestions();
+}
+
+function toggleFollowModal() {
+  if (!modalTargetUser) return;
+  const btn = document.getElementById('modalFollowBtn');
+  toggleFollow(modalTargetUser.id, btn);
+  const updated = db.users.find(u => u.id === modalTargetUser.id);
+  document.getElementById('modalFollowers').textContent = updated.followers.length;
+}
+
+// ===================== USER PROFILE =====================
+function showUserProfile(userId) {
+  if (userId === currentUser.id) { showSection('myprofile'); return; }
+  const user = db.users.find(u => u.id === userId);
+  if (!user) return;
+  modalTargetUser = user;
+  const col = colorFor(user.name);
+  const av = document.getElementById('modalUserAv');
+  av.textContent = user.name[0];
+  av.style.background = col+'22';
+  av.style.color = col;
+  document.getElementById('modalUserName').textContent = user.name;
+  document.getElementById('modalUserUname').textContent = user.username;
+  document.getElementById('modalUserBio').textContent = user.bio;
+  document.getElementById('modalPostCount').textContent = db.posts.filter(p => p.userId === userId).length;
+  document.getElementById('modalFollowers').textContent = user.followers.length;
+  document.getElementById('modalFollowing').textContent = user.following.length;
+  const following = currentUser.following.includes(userId);
+  const fbtn = document.getElementById('modalFollowBtn');
+  fbtn.textContent = following ? 'Following' : 'Follow';
+  fbtn.classList.toggle('following', following);
+  const posts = db.posts.filter(p => p.userId === userId).sort((a,b) => b.time-a.time).slice(0,3);
+  document.getElementById('modalUserPosts').innerHTML = `<h4 style="margin-bottom:0.8rem">Recent Posts</h4>${posts.map(p=>`<div style="background:#f8f9fa;border-radius:12px;padding:0.8rem;margin-bottom:0.6rem;font-size:0.9rem">${p.text.slice(0,120)}${p.text.length>120?'...':''}</div>`).join('') || '<p style="color:#999;font-size:0.9rem">No posts yet</p>'}`;
+  document.getElementById('userProfileModal').classList.add('active');
+}
+
+function closeUserModal(e) {
+  if (e.target === document.getElementById('userProfileModal')) {
+    document.getElementById('userProfileModal').classList.remove('active');
+  }
+}
+
+// ===================== SECTIONS =====================
+function showSection(sec) {
+  document.getElementById('feedSection').style.display = sec === 'feed' ? 'block' : 'none';
+  document.getElementById('myProfileSection').style.display = sec === 'myprofile' ? 'block' : 'none';
+  if (sec === 'myprofile') renderMyProfile();
+}
+
+function renderMyProfile() {
+  syncUser();
+  const u = db.users.find(u => u.id === currentUser.id);
+  const col = colorFor(u.name);
+  const av = document.getElementById('profileAvLg');
+  av.textContent = u.name[0];
+  av.style.background = col+'22';
+  av.style.color = col;
+  document.getElementById('profileFullName').textContent = u.name;
+  document.getElementById('profileUsername').textContent = u.username;
+  document.getElementById('profileBioDisp').textContent = u.bio;
+  const myPosts = db.posts.filter(p => p.userId === u.id);
+  document.getElementById('profPostCount').textContent = myPosts.length;
+  document.getElementById('profFollowers').textContent = u.followers.length;
+  document.getElementById('profFollowing').textContent = u.following.length;
+  document.getElementById('myPostsList').innerHTML = myPosts.sort((a,b)=>b.time-a.time).map(p=>`
+    <div class="card" style="padding:1rem;margin-bottom:1rem">
+      <div style="font-size:0.95rem;line-height:1.6;margin-bottom:0.5rem">${p.text}</div>
+      <div style="font-size:0.8rem;color:var(--gray)">❤️ ${p.likes.length} likes · 💬 ${p.comments.length} comments · ${getTimeAgo(p.time)}</div>
+    </div>
+  `).join('') || '<p style="color:#999">No posts yet. Share something! ✨</p>';
+}
+
+// ===================== EDIT PROFILE =====================
+function showEditProfile() {
+  document.getElementById('editName').value = currentUser.name;
+  document.getElementById('editBio').value = currentUser.bio;
+  document.getElementById('editProfileModal').classList.add('active');
+}
+function closeEditProfile() { document.getElementById('editProfileModal').classList.remove('active'); }
+function saveProfile() {
+  const name = document.getElementById('editName').value.trim();
+  const bio = document.getElementById('editBio').value.trim();
+  if (!name) return;
+  const u = db.users.find(u => u.id === currentUser.id);
+  u.name = name; u.bio = bio;
+  currentUser = u;
+  sessionStorage.setItem('chUser', JSON.stringify(currentUser));
+  saveDb();
+  closeEditProfile();
+  renderMyProfile();
+  syncUser();
+  showToast('✅ Profile updated!');
+}
+
+// ===================== NOTIFICATIONS =====================
+function addNotification(toUserId, type, text) {
+  if (toUserId === currentUser.id) return;
+  db.notifications.push({ id:'n'+Date.now(), toUserId, type, text, time:Date.now(), read:false });
+  saveDb();
+  renderNotifications();
+}
+
+function renderNotifications() {
+  const notifs = db.notifications.filter(n => n.toUserId === currentUser.id).sort((a,b)=>b.time-a.time).slice(0,10);
+  const unread = notifs.filter(n=>!n.read).length;
+  document.getElementById('notifDot').style.display = unread > 0 ? 'block' : 'none';
+  const icons = { like:'❤️', comment:'💬', follow:'👤' };
+  document.getElementById('notifList').innerHTML = notifs.length === 0
+    ? '<p style="padding:1.5rem;color:#999;text-align:center;font-size:0.9rem">No notifications yet</p>'
+    : notifs.map(n => `
+    <div class="notif-item ${n.read?'':'unread'}" onclick="markRead('${n.id}')">
+      <div class="notif-icon">${icons[n.type]||'📣'}</div>
+      <div>
+        <div class="notif-text">${n.text}</div>
+        <div class="notif-time">${getTimeAgo(n.time)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function markRead(id) {
+  const n = db.notifications.find(n => n.id === id);
+  if (n) { n.read = true; saveDb(); renderNotifications(); }
+}
+
+let notifOpen = false;
+function toggleNotif() {
+  notifOpen = !notifOpen;
+  document.getElementById('notifPanel').classList.toggle('active', notifOpen);
+  if (notifOpen) {
+    db.notifications.filter(n=>n.toUserId===currentUser.id).forEach(n=>n.read=true);
+    saveDb(); renderNotifications();
+  }
+}
+
+// ===================== SEARCH =====================
+function searchAll() {
+  const q = document.getElementById('globalSearch').value.toLowerCase();
+  if (!q) { renderFeed(); return; }
+  const posts = db.posts.filter(p => p.text.toLowerCase().includes(q) || (p.tags||[]).some(t=>t.toLowerCase().includes(q)));
+  document.getElementById('feedPosts').innerHTML = posts.length === 0
+    ? `<div style="text-align:center;padding:3rem;color:#999">No results for "${q}" 🔍</div>`
+    : posts.sort((a,b)=>b.time-a.time).map(p=>renderPost(p)).join('');
+}
+
+// ===================== UTILS =====================
+function getTimeAgo(time) {
+  const diff = Date.now() - time;
+  if (diff < 60000) return 'Just now';
+  if (diff < 3600000) return Math.floor(diff/60000)+'m ago';
+  if (diff < 86400000) return Math.floor(diff/3600000)+'h ago';
+  return Math.floor(diff/86400000)+'d ago';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('appToast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+// AUTO LOGIN CHECK
+if (currentUser) startApp();
+</script>
+</body>
+</html>
