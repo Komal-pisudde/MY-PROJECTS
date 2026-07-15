@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> exercise 6 of flexbox</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        nav{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 60px;
+            background-color: rgb(233, 15, 233);
+        }
+
+        .logo{
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        ul{
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        ul li{
+            cursor: pointer;
+        }
+
+        ul li:hover{
+            color: rgba(87, 6, 200, 0.779);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            UltraEdit
+        </div>
+
+        <ul>
+            <li>Products</li>
+            <li>Pricing</li>
+            <li>Resources</li>
+            <li>About Us</li>
+            <li>Security</li>
+        </ul>
+    </nav>
+
+</body>
+</html>
