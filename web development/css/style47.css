@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.logo img {
+    width: 164px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-family: "Segoe UI", sans-serif;
+    padding: 20px 0;
+}
+
+.right ul {
+    display: flex;
+    gap: 34px;
+}
+
+.right ul li {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.right ul li span {
+    padding: 0 5px;
+}
+
+.first {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 23px;
+    margin: 70px;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.first span {
+    font-size: 40px;
+}
+
+section span img {
+    width: 82px;
+    margin: 0 23px;
+}
+
+.first p {
+    font-size: 23px;
+    width: 44vw;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.btn {
+    background-color: #00b6d1;
+    color: white;
+    padding: 14px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 12px 0;
+}
+
+.btn a {
+    color: white;
+    text-decoration: none;
+}
+
+.green {
+    background-color: #5cb85c;
+}
+
+.flex {
+    display: flex;
+}
+
+.small {
+    font-size: 12px;
+}
+
+.second {
+    max-width: 70vw;
+    margin: auto;
+}
+
+.item {
+    background-color: #f9f9f9;
+    padding: 23px;
+    border-radius: 12px;
+    text-align: center;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.item-lang {
+    font-size: 20px;
+    font-weight: 700;
+    padding-bottom: 36px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.download {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: sans-serif;
+}
+
+.download > :nth-child(2) {
+    font-size: 23px;
+}
+
+.download img {
+    padding: 0 12px;
+}
+
+@media screen and (max-width: 1145px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .second {
+        max-width: 90vw;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .right ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .first p {
+        width: 90%;
+    }
+}
