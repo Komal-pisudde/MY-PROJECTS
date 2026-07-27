@@ -94,19 +94,31 @@
 
 <br>
 
-📊 My Coding Journey
-<div align="center"> <img src="https://github-readme-stats.vercel.app/api?username=Komal-pisudde&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" height="165"/> <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Komal-pisudde&layout=compact&theme=tokyonight&hide_border=true" height="165"/> <img src="https://github-readme-streak-stats.herokuapp.com/?user=Komal-pisudde&theme=tokyonight&hide_border=true" width="70%"/> </div> <br>
-🏆 GitHub Trophies
-<div align="center"> <img src="https://github-profile-trophy.vercel.app/?username=Komal-pisudde&theme=radical&no-frame=true&no-bg=false&row=1&column=7" alt="GitHub Trophies"/> </div> <br>
-📈 Contribution Graph
-<div align="center"> <img src="https://github-readme-activity-graph.vercel.app/graph?username=Komal-pisudde&theme=react-dark&hide_border=true" width="90%" alt="Contribution Graph"/> </div> <br>
+## 📊 My Coding Journey
+
+<div align="center">
+
+<img src="https://github-readme-stats.vercel.app/api?username=Komal-pisudde&show_icons=true&theme=tokyonight&hide_border=true&count_private=true" height="165"/>
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Komal-pisudde&layout=compact&theme=tokyonight&hide_border=true" height="165"/>
+
+<img src="https://github-readme-streak-stats.herokuapp.com/?user=Komal-pisudde&theme=tokyonight&hide_border=true" width="70%"/>
+
+</div>
+
+<br>
+
+## 🏆 GitHub Trophies
+
+<div align="center">
+<img src="https://github-profile-trophy-liard-delta.vercel.app/?username=Komal-pisudde&theme=radical&no-frame=true&row=1&column=7" alt="GitHub Trophies"/>
+</div>
 
 <br>
 
 ## 📈 Contribution Graph
 
 <div align="center">
-<img src="https://activity-graph.herokuapp.com/graph?username=Komal-pisudde&theme=react-dark&hide_border=true" width="90%"/>
+<img src="https://github-readme-activity-graph.vercel.app/graph?username=Komal-pisudde&theme=react-dark&hide_border=true" width="90%" alt="Contribution Graph"/>
 </div>
 
 <br>
