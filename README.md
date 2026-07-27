@@ -107,12 +107,6 @@
 
 <br>
 
-## 🏆 GitHub Trophies
-
-<div align="center">
-<img src="https://github-profile-trophy-liard-delta.vercel.app/?username=Komal-pisudde&theme=radical&no-frame=true&row=1&column=7" alt="GitHub Trophies"/>
-</div>
-
 <br>
 
 ## 📈 Contribution Graph
