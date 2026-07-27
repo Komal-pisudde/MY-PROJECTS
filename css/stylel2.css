@@ -1,0 +1,54 @@
+/* Q2 */
+*{
+    font-family: "Times New Roman", serif;
+}
+
+/* Q1 */
+h1{
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: underline;
+    color: darkblue;
+}
+
+/* Paragraph */
+p{
+    font-size: 18px;
+    line-height: 30px;
+    text-align: justify;
+}
+
+/* Hyperlink */
+a{
+    text-decoration: none;
+    color: red;
+}
+
+/* Font Weight */
+.light{
+    font-weight: 300;
+}
+
+.normal{
+    font-weight: 400;
+}
+
+.bold{
+    font-weight: 700;
+}
+
+/* Outer Div */
+#outer{
+    font-size: 25px;
+    background-color: lightblue;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Inner Div */
+#inner{
+    font-size: 10px;
+    background-color: lightgreen;
+    padding: 10px;
+    margin-top: 10px;
+}                  

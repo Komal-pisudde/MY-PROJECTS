@@ -1,0 +1,68 @@
+/* Universal Selector */
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Navbar */
+#navbar{
+    background-color: #0f1111;
+    height: 60px;
+    padding-top: 20px;
+}
+
+#logo{
+    color: #f08804;
+    font-size: 25px;
+}
+
+a{
+    color: white;
+    text-decoration: none;
+    margin-right: 180px;
+}
+
+button{
+    background-color: #f08804;
+    color: white;
+    padding: 5px 10px;
+}
+
+/* Content Area */
+#content{
+    height: 500px;
+    padding: 20px;
+}
+
+/* Boxes */
+.box{
+    height: 100px;
+    width: 100px;
+    border: 2px solid black;
+    display: inline-block;
+    text-align: center;
+    line-height: 100px;
+    margin-right: 20px;
+}
+
+/* Different Colors with Opacity */
+#box1{
+    background-color: rgba(255,0,0,0.5);
+}
+
+#box2{
+    background-color: rgba(0,255,0,0.5);
+}
+
+#box3{
+    background-color: rgba(0,0,255,0.5);
+}
+
+/* Footer */
+footer{
+    background-color: #0f1111;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}

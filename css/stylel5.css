@@ -1,0 +1,95 @@
+/* Universal Selector */
+*{
+    margin:0;
+    padding:0;
+    font-family:Arial, sans-serif;
+}
+
+h1{
+    text-align:center;
+    margin:20px;
+}
+
+/* Percentage (%) */
+#parent{
+    width:400px;
+    height:200px;
+    background-color:lightblue;
+    margin:20px;
+}
+
+#child{
+    width:50%;
+    height:50%;
+    background-color:lightgreen;
+}
+
+/* em */
+.em-box{
+    font-size:30px;
+    margin:20px;
+}
+
+.em-child{
+    font-size:0.5em;
+}
+
+/* Button using em */
+button{
+    font-size:20px;
+    padding:0.5em 1em;
+    border:2px solid black;
+    border-radius:1em;
+    margin:20px;
+}
+
+/* Position */
+.box{
+    width:100px;
+    height:100px;
+    color:white;
+    text-align:center;
+    line-height:100px;
+}
+
+.static{
+    background:red;
+    position:static;
+}
+
+.relative{
+    background:green;
+    position:relative;
+    top:20px;
+    left:30px;
+}
+
+.absolute{
+    background:blue;
+    position:absolute;
+    top:450px;
+    left:250px;
+}
+
+.fixed{
+    background:purple;
+    position:fixed;
+    right:20px;
+    top:20px;
+}
+
+/* Practice Set */
+#nature{
+    height:100px;
+    width:100px;
+    background-color:green;
+    color:white;
+    text-align:center;
+    line-height:100px;
+
+    position:fixed;
+    right:20px;
+    top:100px;
+
+    z-index:1000;
+}
