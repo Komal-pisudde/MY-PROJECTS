@@ -81,7 +81,6 @@
 | 🐍 **Python Automation Scripts** | Everyday tasks made simple with scripts | `Python` |
 | ⚙️ **C++ DSA Practice** | Problem-solving & data structures | `C++` |
 
-*(Replace these with links to your actual repos anytime!)*
 
 </div>
 
@@ -89,8 +88,10 @@
 
 ## 🌟 What Makes This Repo Special?
 
-✨ Clean & beginner-friendly code &nbsp;•&nbsp; ✨ Consistent learning updates
-✨ Multi-language practice &nbsp;•&nbsp; ✨ Real growth journey (not just random code)
+✨ Clean & beginner-friendly code &nbsp;•&nbsp; 
+✨ Consistent learning updates
+✨ Multi-language practice &nbsp;•&nbsp;
+✨ Real growth journey (not just random code)
 
 <br>
 
