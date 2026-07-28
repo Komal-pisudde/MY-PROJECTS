@@ -1,0 +1,110 @@
+/* Universal Selector */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+h1{
+    text-align:center;
+    margin:20px;
+}
+
+/* ---------------- Flex Container ---------------- */
+
+.container{
+    height:300px;
+    border:3px solid black;
+
+    display:flex;
+
+    flex-direction:row;
+
+    justify-content:space-evenly;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    margin:20px;
+}
+
+/* Flex Items */
+
+.box{
+    width:80px;
+    height:80px;
+    color:white;
+    text-align:center;
+    line-height:80px;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.box1{
+    background:red;
+}
+
+.box2{
+    background:green;
+}
+
+.box3{
+    background:blue;
+
+    /* Flex Item Properties */
+    flex-grow:1;
+}
+
+.box4{
+    background:orange;
+    align-self:flex-start;
+}
+
+/* ---------------- Practice Set 1 ---------------- */
+
+.navbar{
+    background:black;
+    list-style:none;
+
+    display:flex;
+
+    justify-content:space-evenly;
+
+    padding:20px;
+}
+
+.navbar a{
+    color:white;
+    text-decoration:none;
+}
+
+/* ---------------- Practice Set 2 ---------------- */
+
+.outer{
+    width:400px;
+    height:300px;
+    border:3px solid black;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin:30px auto;
+}
+
+.inner{
+    width:120px;
+    height:120px;
+    background:tomato;
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+}
