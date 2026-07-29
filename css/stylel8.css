@@ -1,0 +1,108 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+h1{
+    margin: 20px;
+}
+
+/* Transition */
+
+.box{
+    height: 100px;
+    width: 100px;
+    background-color: pink;
+    border: 2px solid black;
+    margin: 50px auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: all 2s ease-in-out 0.2s;
+}
+
+.box:hover{
+    background-color: red;
+    color: white;
+    font-size: 20px;
+
+    /* Transform Examples */
+    transform: rotate(45deg)
+               scale(1.2)
+               translate(30px)
+               skew(20deg);
+}
+
+.box:active{
+    background-color: blue;
+}
+
+/* Animation Example */
+
+.animateBox{
+    height: 100px;
+    width: 100px;
+    background-color: orange;
+    margin: 40px auto;
+
+    animation-name: colorChange;
+    animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-delay: 0s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes colorChange{
+
+    0%{
+        background-color: orange;
+    }
+
+    50%{
+        background-color: yellow;
+        transform: scale(1.2);
+    }
+
+    100%{
+        background-color: green;
+        transform: rotate(360deg);
+    }
+
+}
+
+/* Practice Set 8 Loader */
+
+.loader{
+    height: 100px;
+    width: 100px;
+
+    border: 10px solid lightgray;
+    border-top: 10px solid black;
+
+    border-radius: 50%;
+
+    margin: 50px auto;
+
+    animation: spinAnimate 1s linear infinite;
+}
+
+@keyframes spinAnimate{
+
+    from{
+        transform: rotate(0deg);
+    }
+
+    to{
+        transform: rotate(360deg);
+    }
+
+}
