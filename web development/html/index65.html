@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Factorial</title>
+</head>
+<body>
+
+    <h1>Factorial Program</h1>
+
+    <script>
+        let n = 6;
+
+        // Using For Loop
+        let fact = 1;
+
+        for (let i = 1; i <= n; i++) {
+            fact = fact * i;
+        }
+
+        // Screen par
+        document.write("<h2>For Loop Factorial: " + fact + "</h2>");
+
+        // Console par
+        console.log("For Loop Factorial: " + fact);
+
+
+        // Using Reduce
+        let numbers = Array.from(Array(n + 1).keys()).slice(1);
+
+        let factReduce = numbers.reduce((a, b) => a * b);
+
+        // Screen par
+        document.write("<h2>Reduce Factorial: " + factReduce + "</h2>");
+
+        // Console par
+        console.log("Reduce Factorial: " + factReduce);
+    </script>
+
+</body>
+</html>
