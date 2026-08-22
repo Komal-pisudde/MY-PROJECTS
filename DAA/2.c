@@ -73,7 +73,7 @@ int main()
 {
     printf("NAME:KOMAL PISUDDE\n");
     printf("ROLL NO: 20\n");
-    printf("DEP: IT \n\n");
+    printf("DEP: IT \n");
 
     int n, Arr[100];
 
