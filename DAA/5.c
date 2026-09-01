@@ -10,19 +10,23 @@ struct Item
 int main()
 {
     struct Item item[20], temp;
+
     int n, capacity, i, j;
     int currentWeight = 0;
+
     float totalProfit = 0.0;
     float fraction;
 
     printf("Enter number of items: ");
     scanf("%d", &n);
 
-    // Input profit and weight
     for (i = 0; i < n; i++)
     {
         printf("Enter profit and weight of item %d: ", i + 1);
-        scanf("%d %d", &item[i].profit, &item[i].weight);
+
+        scanf("%d %d",
+               &item[i].profit,
+               &item[i].weight);
 
         item[i].ratio =
             (float)item[i].profit / item[i].weight;
@@ -31,8 +35,9 @@ int main()
     printf("Enter capacity of knapsack: ");
     scanf("%d", &capacity);
 
-    // Sort items according to decreasing profit/weight ratio
-    for (i = 0; i < n; i++)
+    /* Sort according to decreasing profit/weight ratio */
+
+    for (i = 0; i < n - 1; i++)
     {
         for (j = i + 1; j < n; j++)
         {
@@ -45,7 +50,8 @@ int main()
         }
     }
 
-    // Select items
+    /* Select items */
+
     for (i = 0; i < n; i++)
     {
         if (currentWeight + item[i].weight <= capacity)
@@ -63,9 +69,11 @@ int main()
                 / item[i].weight;
 
             totalProfit =
-                totalProfit + item[i].profit * fraction;
+                totalProfit +
+                item[i].profit * fraction;
 
             currentWeight = capacity;
+
             break;
         }
     }

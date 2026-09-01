@@ -1,40 +1,120 @@
 #include <stdio.h>
+#include <stdlib.h>
+
+struct Node
+{
+    char ch;
+    int freq;
+    struct Node *left, *right;
+};
+
+struct Node* newNode(char ch, int freq)
+{
+    struct Node *temp;
+
+    temp = (struct Node*)malloc(sizeof(struct Node));
+
+    temp->ch = ch;
+    temp->freq = freq;
+    temp->left = NULL;
+    temp->right = NULL;
+
+    return temp;
+}
+
+void printCodes(struct Node *root, int code[], int top)
+{
+    int i;
+
+    if (root->left)
+    {
+        code[top] = 0;
+        printCodes(root->left, code, top + 1);
+    }
+
+    if (root->right)
+    {
+        code[top] = 1;
+        printCodes(root->right, code, top + 1);
+    }
+
+    if (root->left == NULL && root->right == NULL)
+    {
+        printf("%c : ", root->ch);
+
+        for (i = 0; i < top; i++)
+        {
+            printf("%d", code[i]);
+        }
+
+        printf("\n");
+    }
+}
 
 int main()
 {
-    int n, i;
-    int arr[100];
-    int min, max;
+    struct Node *nodes[10];
+    struct Node *left, *right, *newnode, *root;
 
-    printf("Name: KOMAL PISUDDE | Roll No:20 | Sec: IT\n");
+    int n, i, j;
+    int min1, min2;
+    int code[10];
 
-    printf("Enter number of elements: ");
+    char ch[10];
+
+    printf("Enter number of characters: ");
     scanf("%d", &n);
 
-    printf("Enter %d elements: ", n);
-
-    for(i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
     {
-        scanf("%d", &arr[i]);
+        printf("Enter character and frequency: ");
+        scanf(" %c%d", &ch[i], &j);
+
+        nodes[i] = newNode(ch[i], j);
     }
 
-    min = max = arr[0];
+    /* Build Huffman Tree */
 
-    for(i = 1; i < n; i++)
+    for (i = n; i > 1; i--)
     {
-        if(arr[i] < min)
+        min1 = 0;
+
+        for (j = 1; j < i; j++)
         {
-            min = arr[i];
+            if (nodes[j]->freq < nodes[min1]->freq)
+            {
+                min1 = j;
+            }
         }
 
-        if(arr[i] > max)
+        left = nodes[min1];
+        nodes[min1] = nodes[i - 1];
+
+        min2 = 0;
+
+        for (j = 1; j < i - 1; j++)
         {
-            max = arr[i];
+            if (nodes[j]->freq < nodes[min2]->freq)
+            {
+                min2 = j;
+            }
         }
+
+        right = nodes[min2];
+
+        newnode = newNode('$', left->freq + right->freq);
+
+        newnode->left = left;
+        newnode->right = right;
+
+        nodes[min2] = newnode;
     }
 
-    printf("Minimum element = %d\n", min);
-    printf("Maximum element = %d\n", max);
+    root = nodes[0];
+
+    printf("\nHuffman Codes:\n");
+
+    printCodes(root, code, 0);
 
     return 0;
 }

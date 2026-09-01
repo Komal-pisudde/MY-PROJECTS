@@ -5,7 +5,7 @@ X = [1, 2, 3, 4, 5, 6]
 Y = [2, 4, 6, 8, 10, 12]
 
 # Value of K
-k = 3
+k = 3   
 
 # Test Point
 test = 4.5
@@ -22,7 +22,7 @@ distances.sort()
 
 # Select K nearest neighbors
 nearest = distances[:k]
-
+                                     
 # Predict using Average
 prediction = 0
 
