@@ -30,7 +30,7 @@ void floydWarshall(int graph[V][V])
     // Copy graph into distance matrix
     for (i = 0; i < V; i++)
     {
-        for (j = 0; j < V; j++)
+        for (j = 0; j < V; j
         {
             dist[i][j] = graph[i][j];
         }
